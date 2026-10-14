@@ -160,6 +160,7 @@ body.lang-en .cjk-only { display: none !important; }
   color: #5a4000; margin: 10px 0; line-height: 1.7; }
 
 /* Brand bar */
+body.contextual-active .day-sov-only { display: none !important; }
 .brand-bar { width:100%; max-width:1140px; margin-left:auto; margin-right:auto; background: #fff; border: 1.5px solid #ff9900;
   border-radius: 7px; padding: 7px 12px; margin-top:0; margin-bottom:10px;
   display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
@@ -322,9 +323,9 @@ var CTX_TEMPLATE_B64 = "UEsDBBQABgAIAAAAIQCPeNyXMAIAAHwQAAATAAgCW0NvbnRlbnRfVHlw
   <span class="brand-divider"></span>
   <label><span data-i18n="marketplace">Marketplace</span> <span class="req">*</span>:</label>
   <select id="marketplace" required aria-required="true" onchange="syncBrand(this)" style="width:180px;"><option value="" selected>—</option><option value="AU">AU</option><option value="CA-EN">CA-EN</option><option value="CA-FR">CA-FR</option><option value="DE">DE</option><option value="ES">ES</option><option value="FR">FR</option><option value="IT">IT</option><option value="UK">UK</option><option value="US">US</option></select>
-  <span class="brand-divider"></span>
-  <label>Store Deals Page URL <span class="req">*</span>:</label>
-  <input type="url" id="store-deals-url" placeholder="https://www.amazon.com/..." required aria-required="true" style="width:300px;" oninput="syncStoreDealsUrl(this)">
+  <span class="brand-divider day-sov-only"></span>
+  <label class="day-sov-only">Store Deals Page URL <span class="req">*</span>:</label>
+  <input class="day-sov-only" type="url" id="store-deals-url" placeholder="https://www.amazon.com/..." required aria-required="true" style="width:300px;" oninput="syncStoreDealsUrl(this)">
 </div>
 
 <div class="page">
@@ -617,14 +618,14 @@ Contextual PDP：仅限 AutoGen REC，最多 2 个创意。
 <span class="zh">创意权重分配</span></td>
 <td class="input-col"><input type="number" value="100"
  min="0" max="100" id="ctx-w1"
- oninput="calcCtxWeight()">
+ oninput="calcCtxWeight(this)">
 <div class="ctx-w1-total" id="ctx-w1-total" style="text-align:right;margin-top:2px;font-size:11px;">Total: <span class="weight-total ok" id="ctx-weight-total-alt">100%</span></div></td>
 <td class="input-col ctx-col2 col-off" style="position:relative;">
-<input type="number" value="" min="0" max="100" disabled
- id="ctx-w2" oninput="calcCtxWeight()">
+<input type="number" value="0" min="0" max="100" disabled
+ id="ctx-w2" oninput="calcCtxWeight(this)">
 <div style="text-align:right;margin-top:2px;">
 Total: <span class="weight-total ok"
- id="ctx-weight-total">—</span></div></td>
+ id="ctx-weight-total">100%</span></div></td>
 </tr>
 <tr>
 <td class="label-col">Enable 3P Seller Price? <span class="req">*</span>
@@ -735,7 +736,9 @@ function initLanguage() {
 }
 
 /* ============ TAB SWITCHING ============ */
-function switchTab(id, btn) {
+function switchTab(id, btn, updateUrl) {
+  var validTabs = { 'hp-ep': true, 'ctx': true };
+  if (!validTabs[id]) id = 'hp-ep';
   document.querySelectorAll('.tab-pane').forEach(
     function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.tab-btn').forEach(
@@ -743,8 +746,32 @@ function switchTab(id, btn) {
   var el = document.getElementById('tab-' + id);
   if (el) el.classList.add('active');
   if (btn) btn.classList.add('active');
+  document.body.classList.toggle('contextual-active', id === 'ctx');
   /* Track current tab for export */
   window._currentTab = id;
+  /* Hash works for both hosted pages and local file links. */
+  if (updateUrl !== false) {
+    try { window.location.hash = id === 'ctx' ? 'ctx' : ''; }
+    catch(e) { console.warn('Unable to update tab URL:', e.message); }
+  }
+}
+function initTabFromUrl() {
+  var tab = 'hp-ep';
+  try {
+    var query = window.location.search || '';
+    var requested = new URLSearchParams(query).get('tab');
+    var hash = (window.location.hash || '').replace(/^#/, '');
+    var hashTab = new URLSearchParams(hash).get('tab');
+    if (requested === 'ctx' || requested === 'contextual' ||
+        hashTab === 'ctx' || hashTab === 'contextual' || hash === 'ctx') tab = 'ctx';
+  } catch(e) {
+    if (/[?&]tab=(ctx|contextual)(?:&|$)/i.test(window.location.search || '') ||
+        /(?:^|&)tab=(ctx|contextual)(?:&|$)/i.test((window.location.hash || '').replace(/^#/, '')) ||
+        (window.location.hash || '') === '#ctx') tab = 'ctx';
+  }
+  var buttons = document.querySelectorAll('.tab-btn');
+  var btn = tab === 'ctx' ? buttons[1] : buttons[0];
+  switchTab(tab, btn, false);
 }
 
 /* ============ TOAST ============ */
@@ -1462,8 +1489,9 @@ function validateCtxAsins(textarea) {
   if (count < 3 && count > 0) {
     msgs.push('');
   }
-  var status = count + '/3-20 ASINs';
-  infoEl.textContent = (isErr ? msgs.join(' | ') + ' \u2014 ' : (count < 3 ? '\u26a0 ' : '\u2713 ')) + status;
+  var recommendation = count < 3 ? '\uff08' + count + '\uff093-20 ASINs are recommended' : '';
+  infoEl.textContent = isErr ? msgs.join(' | ') :
+    (recommendation ? '\u26a0 ' + recommendation : '\u2713 ' + count + ' ASINs');
   infoEl.className = 'asin-info ' + (isErr ? 'err' : (count < 3 ? 'err' : 'ok'));
   scheduleAutoSave();
 }
@@ -1518,25 +1546,38 @@ function calcCCMWeight() {
   }
   scheduleAutoSave();
 }
-function calcCtxWeight() {
+function calcCtxWeight(changedEl) {
   var w1El = document.getElementById('ctx-w1');
   var w2El = document.getElementById('ctx-w2');
-  var w1 = parseInt(w1El.value) || 0;
   var rec2On = document.getElementById('ctx-rec2-chk') &&
     document.getElementById('ctx-rec2-chk').checked;
-  var w2 = rec2On ? (parseInt(w2El.value) || 0) : 0;
+
+  if (!rec2On) {
+    /* REC 1 owns 100% when REC 2 is disabled. */
+    w1El.value = '100';
+    w2El.value = '0';
+  } else if (changedEl === w1El) {
+    var w1Changed = Math.max(0, Math.min(100, parseInt(w1El.value, 10) || 0));
+    w1El.value = String(w1Changed);
+    w2El.value = String(100 - w1Changed);
+  } else if (changedEl === w2El) {
+    var w2Changed = Math.max(0, Math.min(100, parseInt(w2El.value, 10) || 0));
+    w2El.value = String(w2Changed);
+    w1El.value = String(100 - w2Changed);
+  } else if (w1El.value === '' || w2El.value === '' ||
+             (parseInt(w1El.value, 10) || 0) + (parseInt(w2El.value, 10) || 0) !== 100) {
+    /* First enable, or invalid restored values: start with an even split. */
+    w1El.value = '50';
+    w2El.value = '50';
+  }
+
+  var w1 = parseInt(w1El.value, 10) || 0;
+  var w2 = rec2On ? (parseInt(w2El.value, 10) || 0) : 0;
   var total = rec2On ? (w1 + w2) : w1;
   var el = document.getElementById('ctx-weight-total');
   if (el) {
-    if (!rec2On) {
-      el.textContent = w1 === 100 ? '100%' : w1 + '%';
-      el.className = w1 === 100
-        ? 'weight-total ok' : 'weight-total error';
-    } else {
-      el.textContent = total + '%';
-      el.className = total === 100
-        ? 'weight-total ok' : 'weight-total error';
-    }
+    el.textContent = '100%';
+    el.className = total === 100 ? 'weight-total ok' : 'weight-total error';
   }
   /* Update alt total under REC 1 */
   var altEl = document.getElementById('ctx-weight-total-alt');
@@ -1544,8 +1585,8 @@ function calcCtxWeight() {
   if (altEl && altDiv) {
     if (!rec2On) {
       altDiv.style.display = 'block';
-      altEl.textContent = w1 === 100 ? '100%' : w1 + '%';
-      altEl.className = w1 === 100
+      altEl.textContent = '100%';
+      altEl.className = total === 100
         ? 'weight-total ok' : 'weight-total error';
     } else {
       altDiv.style.display = 'none';
@@ -1601,7 +1642,9 @@ function toggleCtxCol2(chk) {
   });
   if (!on) {
     var w1Off = document.getElementById('ctx-w1');
+    var w2Off = document.getElementById('ctx-w2');
     if (w1Off) w1Off.value = '100';
+    if (w2Off) w2Off.value = '0';
   }
   if (on) {
     /* Re-enable basic inputs */
@@ -2615,7 +2658,8 @@ async function downloadCtx() {
     
     /* Write REC 1 (column B = 2) */
     ws.getCell('B5').value = 'Autogen REC';
-    ws.getCell('B6').value = (document.getElementById('ctx-asin1') || {}).value || '';
+    ws.getCell('B6').value = 'Up to 20 ASINS';
+    ws.getCell('B7').value = (document.getElementById('ctx-asin1') || {}).value || '';
     ws.getCell('B8').value = (document.getElementById('ctx-logo-hl-1') || {}).value || 'No';
     ws.getCell('B9').value = (document.getElementById('ctx-headline-1') || {}).value || 'N/A';
     ws.getCell('B10').value = (document.getElementById('ctx-logo-1') || {}).value || 'Please provide logo file via email';
@@ -2630,7 +2674,8 @@ async function downloadCtx() {
       document.getElementById('ctx-rec2-chk').checked;
     if (rec2On) {
       ws.getCell('C5').value = 'Autogen REC';
-      ws.getCell('C6').value = (document.getElementById('ctx-asin2') || {}).value || '';
+      ws.getCell('C6').value = 'Up to 20 ASINS';
+      ws.getCell('C7').value = (document.getElementById('ctx-asin2') || {}).value || '';
       ws.getCell('C8').value = (document.getElementById('ctx-logo-hl-2') || {}).value || 'No';
       ws.getCell('C9').value = (document.getElementById('ctx-headline-2') || {}).value || 'N/A';
       ws.getCell('C10').value = (document.getElementById('ctx-logo-2') || {}).value || 'Please provide logo file via email';
@@ -2685,6 +2730,7 @@ updateCopybank();
 applyHintRowMerges();
 ['dwp','wpd','wpm','all'].forEach(refreshCustomFormatOptions);
 initLanguage();
+initTabFromUrl();
 
 } catch(e) { console.warn('Init error:', e.message); }
 
