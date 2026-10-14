@@ -2664,14 +2664,16 @@ async function downloadCtx() {
     ws.getCell('B9').value = (document.getElementById('ctx-headline-1') || {}).value || 'N/A';
     ws.getCell('B10').value = (document.getElementById('ctx-logo-1') || {}).value || 'Please provide logo file via email';
     ws.getCell('B11').value = 'PDP';
-    var w1 = parseInt((document.getElementById('ctx-w1') || {}).value) || 50;
+    /* REC 2 state must control both exported weights. */
+    var rec2On = document.getElementById('ctx-rec2-chk') &&
+      document.getElementById('ctx-rec2-chk').checked;
+    var w1 = parseInt((document.getElementById('ctx-w1') || {}).value, 10);
+    if (isNaN(w1)) w1 = rec2On ? 50 : 100;
     ws.getCell('B12').value = w1;
     ws.getCell('B13').value = (document.getElementById('ctx-3p-1') || {}).value || 'Yes';
     ws.getCell('B14').value = 'Shop Now';
     
     /* Write REC 2 (column C = 3) — only if enabled */
-    var rec2On = document.getElementById('ctx-rec2-chk') &&
-      document.getElementById('ctx-rec2-chk').checked;
     if (rec2On) {
       ws.getCell('C5').value = 'Autogen REC';
       ws.getCell('C6').value = 'Up to 20 ASINS';
@@ -2680,10 +2682,14 @@ async function downloadCtx() {
       ws.getCell('C9').value = (document.getElementById('ctx-headline-2') || {}).value || 'N/A';
       ws.getCell('C10').value = (document.getElementById('ctx-logo-2') || {}).value || 'Please provide logo file via email';
       ws.getCell('C11').value = 'PDP';
-      var w2 = parseInt((document.getElementById('ctx-w2') || {}).value) || 50;
+      var w2 = parseInt((document.getElementById('ctx-w2') || {}).value, 10);
+      if (isNaN(w2)) w2 = 100 - w1;
       ws.getCell('C12').value = w2;
       ws.getCell('C13').value = (document.getElementById('ctx-3p-2') || {}).value || 'Yes';
       ws.getCell('C14').value = 'Shop Now';
+    } else {
+      /* The embedded template may contain 50 in C12, so overwrite it. */
+      ws.getCell('C12').value = 0;
     }
     
     /* SUM formula for weighting */
