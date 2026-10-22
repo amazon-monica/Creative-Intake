@@ -385,9 +385,12 @@ function validateUrl(v){
     const url=new URL(val.startsWith('http')?val:'https://'+val);
     const host=url.hostname.toLowerCase();
     const ok=/(\.|^)amazon\.(com|co\.jp|co\.uk|de|fr|it|es|ca|com\.au|com\.br|com\.mx|in|sg|sa|ae|nl|pl|se|com\.tr|eg)$/.test(host);
-    if(ok){err.className='policy-note';input.classList.remove('error');}
-    else{err.className='policy-note show';err.innerHTML='⚠️ Only Amazon URLs accepted. External links not allowed. <span class="zh">· 仅接受亚马逊链接，不接受外部链接。</span>';input.classList.add('error');}
-  }catch(e){err.className='policy-note show';err.innerHTML='⚠️ Invalid URL format <span class="zh">· URL 格式无效</span>';input.classList.add('error');}
+    if(!ok){err.className='policy-note show';err.innerHTML='⚠️ Only Amazon URLs accepted. External links not allowed. <span class="zh">· 仅接受亚马逊链接，不接受外部链接。</span>';input.classList.add('error');return;}
+    err.className='policy-note';input.classList.remove('error');
+    if(/\/dp\//i.test(url.pathname)){
+      alert('Brand Store landing pages are recommended. Product detail pages require an exception request, which is not guaranteed to be approved and may extend the SLA.\n\n建议使用 Brand Store 作为落地页。使用商品详情页需申请 exception，审批不保证通过，且可能延长 SLA。');
+    }
+  }catch(e){err.className='policy-note show';err.innerHTML='⚠️ Invalid URL format <span class=zh>· URL 格式无效</span>';input.classList.add('error');}
 }
 
 function buildHTML(flow,n){
@@ -443,7 +446,7 @@ function buildHTML(flow,n){
         <div class="hint">ASIN(s) featured in the creative (1–3).<br><span class="zh">创意中展示的 ASIN（1–3 个）。</span></div></div>
       <div class="field"><label>Landing Page URL <span class="zh">· 落地页链接</span> <span class="req">*</span></label>
         <input type="text" id="${v}-url" placeholder="https://amazon.com/stores/..." data-req="true" oninput="validateUrl('${v}')"/>
-        <div class="hint">Brand Store or PDP. Multi-ASIN must use Brand Store.<br><span class="zh">Brand Store 或 PDP。多 ASIN 须使用 Brand Store。</span></div>
+        <div class="hint">Brand Store Page.<br><span class="zh">落地页应为 Store Page。</span></div>
         <div class="policy-note" id="${v}-url-err"></div></div>
     </div>
     <div class="field" style="margin-top:10px">
