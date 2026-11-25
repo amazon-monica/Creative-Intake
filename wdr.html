@@ -995,8 +995,9 @@ async function downloadExcel(){
 
     /* 03 Creative Files */
     addSection('03  CREATIVE FILES · 素材文件');
-    const bgVal=g('bg-val')||g('bg');
-    if(bgVal) addRow('Background File Name · 背景文件名',bgVal,fL,fV);
+    const bgTpl=g('bg-val'), bgFile=g('bg');
+    if(document.getElementById(v+'-bg-val')){const m={Gradient:'Gradient · 渐变',Spotlight:'Spotlight · 聚光',Textured:'Textured · 纹理'};addRow('Background Template · 背景模板',m[bgTpl]||bgTpl||'—',fL,fV);}
+    if(bgFile) addRow('Background File Name · 背景文件名',bgFile,fL,fV);
     const fm=b.querySelector('input[name="file_method_'+v+'"]:checked')?.value||'';
     addRow('File Delivery · 素材提交方式',fm==='attachment'?'Email Attachment · 邮件附件':fm==='link'?'Download Link · 下载链接':'—',fL,fV);
     const fl=g('file-link');
