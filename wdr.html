@@ -3,6 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Window Display Rotational — Creative Intake Form | 素材提交表</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310121c'/%3E%3Cpath fill='%23ff2d8a' d='M8 8 H30 V14 A4.5 4.5 0 1 1 30 23 V30 H23 A4.5 4.5 0 1 1 14 30 H8 Z'/%3E%3Cpath fill='%2300d9ff' d='M34 8 H56 V30 H34 V23.2 A5.4 5.4 0 0 0 34 13.8 Z'/%3E%3Cpath fill='%23b6ff3b' d='M8 34 H13.8 A5.4 5.4 0 0 0 23.2 34 H30 V56 H8 Z'/%3E%3C/svg%3E">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; background: #f0f2f5; color: #222; line-height: 1.5; }
@@ -321,6 +322,55 @@ body{line-height:1.35;}
 #v-toast li{cursor:pointer;line-height:1.6;text-decoration:underline dotted;}
 #v-toast li:hover{color:#c0392b;}
 #v-toast button{position:absolute;top:6px;right:8px;border:none;background:none;font-size:14px;cursor:pointer;color:#999;}
+
+/* v17: help modal */
+#help-modal .hm-doc{font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;margin:0;background:#f5f6f8;color:#16191f;line-height:1.6}
+#help-modal .wrap{max-width:1200px;margin:0 auto;padding:24px}
+#help-modal .doc{background:#fff;border-radius:8px;padding:24px 28px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+#help-modal .src{font-size:12px;color:#5f6b7a;margin-bottom:12px}
+#help-modal .src a{color:#0972d3}
+#help-modal .row{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:10px 0;border-bottom:1px solid #eef0f2}
+#help-modal .row:last-child{border-bottom:none}
+#help-modal .row>div:last-child{color:#0b3d6e}
+#help-modal h1{font-size:24px;margin:0}
+#help-modal h2{font-size:18px;margin:8px 0 0}
+#help-modal .meta{font-size:13px;color:#5f6b7a}
+#help-modal .note{background:#f2f8fd;border-left:3px solid #0972d3;padding:8px 12px;border-radius:4px}
+#help-modal ol,#help-modal ul{margin:4px 0;padding-left:20px}
+#help-modal .head{font-weight:600;color:#5f6b7a;font-size:13px}
+#help-modal table{width:100%;border-collapse:collapse;font-size:14px}
+#help-modal th,#help-modal td{border:1px solid #e1e4e8;padding:8px 10px;vertical-align:top;text-align:left}
+#help-modal th{background:#f2f3f5}
+#help-modal td.zh{color:#0b3d6e}
+#help-modal{display:none;position:fixed;inset:0;background:rgba(20,28,38,.55);z-index:9997;padding:30px 20px;overflow:auto;}
+#help-modal.show{display:block;}
+#help-modal .hm-box{position:relative;max-width:1100px;margin:0 auto;}
+#help-modal .hm-doc{display:none;}
+#help-modal .hm-doc.on{display:block;}
+#help-modal .doc{margin-bottom:0;}
+#help-modal .hm-x{position:sticky;top:0;float:right;margin:8px 8px -40px 0;z-index:2;width:32px;height:32px;border-radius:50%;border:none;background:#232f3e;color:#fff;font-size:15px;cursor:pointer;}
+.help-links{margin-top:4px;font-size:12px;}
+.help-links a{color:#0972d3;text-decoration:none;cursor:pointer;margin-right:12px;}
+.help-links a:hover{text-decoration:underline;}
+
+#help-modal tr.hl-row td{background:#fff3e0 !important;font-weight:600;border-top:2px solid #ff9900;border-bottom:2px solid #ff9900;}
+#help-modal tr.hl-row td:first-child{border-left:4px solid #ff9900;}
+
+#help-modal mark.tk{background:#ffe0a8;color:#5a3a00;padding:0 3px;border-radius:3px;font-weight:600;}
+label + .help-links{margin:0 0 0 10px;font-size:12px;font-weight:400;}
+
+label + .help-links{font-size:11px !important;}
+label + .help-links a{color:#333 !important;text-decoration:underline !important;text-underline-offset:2px;margin:0 !important;}
+label + .help-links a:hover{color:#000 !important;}
+.help-links .hl-div{color:#aaa;margin:0 6px;}
+
+label + .help-links a{color:#888 !important;}
+label + .help-links a:hover{color:#555 !important;}
+
+/* v18: intro text flush-left */
+.flow-intro .txt > .zh{display:block;text-indent:0;margin:0;padding:0;}
+body.lang-zh .flow-intro .txt > br{display:none;}
+body.lang-zh .flow-intro .txt > strong{display:block;margin:0 0 2px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 </head>
@@ -361,13 +411,11 @@ body{line-height:1.35;}
     <tr class="total"><td>Total · 总计</td><td>8 BD</td></tr></table>
     <div class="sla-note">⏱ SLA starts after assets pass initial review · SLA 起算点：素材提交审核无误后
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e0e4ea">
-        <div style="font-size:12px;font-weight:700;color:#ff9900;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
+        <div style="font-size:12px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
         <table><tr><th>Rule · 规则</th><th>Guideline · 说明</th></tr>
       <tr><td><b>Action-Oriented</b><br><span class="zh">行动导向</span></td><td>At least one line must use a true action verb — Shop, Explore, Discover, Experience, Try.<br><span class="zh">至少一行须使用明确的行动动词，如 Shop、Explore、Discover、Experience、Try。</span></td></tr>
       <tr><td><b>Separate Statements</b><br><span class="zh">独立语句</span></td><td>Headline and sub-headline must be distinct statements. Each stands alone — do not split one phrase across them or the logo.<br><span class="zh">标题和副标题须各自成句，不可将一句话拆开或被 Logo 隔断。</span></td></tr>
-      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr>
-      <tr><td><b>Formatting</b><br><span class="zh">格式</span></td><td>Text size is fixed and cannot be adjusted. Character widths vary — preview on a 320 px screen.<br><span class="zh">字号固定不可调整；字符宽度不一，请按 320 px 屏幕预览。</span></td></tr>
-      <tr><td><b>Character Limits</b><br><span class="zh">字符上限</span></td><td>Headline 16 / line, max 2 lines · Sub-headline 23 / line, max 2 lines · Disclaimer 21, 1 line. Use one of the 4 approved layouts.<br><span class="zh">标题每行 16 字符、最多 2 行；副标题每行 23 字符、最多 2 行；免责声明 21 字符、1 行。须使用 4 种认可版式之一。</span></td></tr></table>
+      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr></table>
       </div>
     </div></details></div></aside>
 </div>
@@ -389,13 +437,11 @@ body{line-height:1.35;}
     <tr class="total"><td>Total · 总计</td><td>9 BD</td></tr></table>
     <div class="sla-note">⏱ SLA starts after assets pass initial review · SLA 起算点：素材提交审核无误后
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e0e4ea">
-        <div style="font-size:12px;font-weight:700;color:#ff9900;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
+        <div style="font-size:12px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
         <table><tr><th>Rule · 规则</th><th>Guideline · 说明</th></tr>
       <tr><td><b>Action-Oriented</b><br><span class="zh">行动导向</span></td><td>At least one line must use a true action verb — Shop, Explore, Discover, Experience, Try.<br><span class="zh">至少一行须使用明确的行动动词，如 Shop、Explore、Discover、Experience、Try。</span></td></tr>
       <tr><td><b>Separate Statements</b><br><span class="zh">独立语句</span></td><td>Headline and sub-headline must be distinct statements. Each stands alone — do not split one phrase across them or the logo.<br><span class="zh">标题和副标题须各自成句，不可将一句话拆开或被 Logo 隔断。</span></td></tr>
-      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr>
-      <tr><td><b>Formatting</b><br><span class="zh">格式</span></td><td>Text size is fixed and cannot be adjusted. Character widths vary — preview on a 320 px screen.<br><span class="zh">字号固定不可调整；字符宽度不一，请按 320 px 屏幕预览。</span></td></tr>
-      <tr><td><b>Character Limits</b><br><span class="zh">字符上限</span></td><td>Headline 16 / line, max 2 lines · Sub-headline 23 / line, max 2 lines · Disclaimer 21, 1 line. Use one of the 4 approved layouts.<br><span class="zh">标题每行 16 字符、最多 2 行；副标题每行 23 字符、最多 2 行；免责声明 21 字符、1 行。须使用 4 种认可版式之一。</span></td></tr></table>
+      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr></table>
       </div>
     </div></details></div></aside>
 </div>
@@ -417,13 +463,11 @@ body{line-height:1.35;}
     <tr class="total"><td>Total · 总计</td><td>10 BD</td></tr></table>
     <div class="sla-note">⏱ SLA starts after assets pass initial review · SLA 起算点：素材提交审核无误后
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e0e4ea">
-        <div style="font-size:12px;font-weight:700;color:#ff9900;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
+        <div style="font-size:12px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
         <table><tr><th>Rule · 规则</th><th>Guideline · 说明</th></tr>
       <tr><td><b>Action-Oriented</b><br><span class="zh">行动导向</span></td><td>At least one line must use a true action verb — Shop, Explore, Discover, Experience, Try.<br><span class="zh">至少一行须使用明确的行动动词，如 Shop、Explore、Discover、Experience、Try。</span></td></tr>
       <tr><td><b>Separate Statements</b><br><span class="zh">独立语句</span></td><td>Headline and sub-headline must be distinct statements. Each stands alone — do not split one phrase across them or the logo.<br><span class="zh">标题和副标题须各自成句，不可将一句话拆开或被 Logo 隔断。</span></td></tr>
-      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr>
-      <tr><td><b>Formatting</b><br><span class="zh">格式</span></td><td>Text size is fixed and cannot be adjusted. Character widths vary — preview on a 320 px screen.<br><span class="zh">字号固定不可调整；字符宽度不一，请按 320 px 屏幕预览。</span></td></tr>
-      <tr><td><b>Character Limits</b><br><span class="zh">字符上限</span></td><td>Headline 16 / line, max 2 lines · Sub-headline 23 / line, max 2 lines · Disclaimer 21, 1 line. Use one of the 4 approved layouts.<br><span class="zh">标题每行 16 字符、最多 2 行；副标题每行 23 字符、最多 2 行；免责声明 21 字符、1 行。须使用 4 种认可版式之一。</span></td></tr></table>
+      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr></table>
       </div>
     </div></details></div></aside>
 </div>
@@ -446,13 +490,11 @@ body{line-height:1.35;}
     <div style="background:#f0f9ff;border-left:3px solid #0369a1;border-radius:0 6px 6px 0;padding:7px 12px;margin-top:8px;font-size:12px;color:#0c4a6e;line-height:1.65"><div class="lang-en"><strong>ℹ️ Video Asset Guidelines:</strong> Start/end slates are fully produced by Amazon Creative Services. Advertisers provide the video asset and original source imagery — Amazon CS will adapt them into the slate format. Video duration: <strong>6–8 seconds including start/end slates</strong>. If minor trimming is needed, CS will handle it.</div><div class="lang-zh" style="margin-top:4px"><strong>ℹ️ 视频素材说明：</strong>片头/片尾画面由 Amazon Creative Services 团队完成制作。广告主需提供视频素材和原始源图，CS 团队将其适配为片头/片尾格式。视频时长：<strong>含片头片尾共 6–8 秒</strong>。如需轻微剪辑，CS 团队会代为处理。</div></div>
     <div class="sla-note">⏱ SLA starts after assets pass initial review · SLA 起算点：素材提交审核无误后
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e0e4ea">
-        <div style="font-size:12px;font-weight:700;color:#ff9900;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
+        <div style="font-size:12px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">📝 Headline & Sub-headline Guidelines · 标题与副标题规范</div>
         <table><tr><th>Rule · 规则</th><th>Guideline · 说明</th></tr>
       <tr><td><b>Action-Oriented</b><br><span class="zh">行动导向</span></td><td>At least one line must use a true action verb — Shop, Explore, Discover, Experience, Try.<br><span class="zh">至少一行须使用明确的行动动词，如 Shop、Explore、Discover、Experience、Try。</span></td></tr>
       <tr><td><b>Separate Statements</b><br><span class="zh">独立语句</span></td><td>Headline and sub-headline must be distinct statements. Each stands alone — do not split one phrase across them or the logo.<br><span class="zh">标题和副标题须各自成句，不可将一句话拆开或被 Logo 隔断。</span></td></tr>
-      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr>
-      <tr><td><b>Formatting</b><br><span class="zh">格式</span></td><td>Text size is fixed and cannot be adjusted. Character widths vary — preview on a 320 px screen.<br><span class="zh">字号固定不可调整；字符宽度不一，请按 320 px 屏幕预览。</span></td></tr>
-      <tr><td><b>Character Limits</b><br><span class="zh">字符上限</span></td><td>Headline 16 / line, max 2 lines · Sub-headline 23 / line, max 2 lines · Disclaimer 21, 1 line. Use one of the 4 approved layouts.<br><span class="zh">标题每行 16 字符、最多 2 行；副标题每行 23 字符、最多 2 行；免责声明 21 字符、1 行。须使用 4 种认可版式之一。</span></td></tr></table>
+      <tr><td><b>Capitalization</b><br><span class="zh">大小写</span></td><td>Sentence case. Title case only for category/browse names, product titles and proper nouns.<br><span class="zh">句首大写；仅品类/浏览节点名、商品标题和专有名词可用标题式大写。</span></td></tr></table>
       
       </div>
     </div></details></div></aside>
@@ -652,9 +694,9 @@ function buildHTML(flow,n){
     </div>
     <div class="field" style="margin-top:10px">
       <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px">
-        <label style="margin:0;flex-shrink:0">Tracking ASIN(s) <span class="zh">· 追踪 ASIN</span> <span class="req">*</span></label>
-        <span style="font-size:11.5px;color:#888">For conversion tracking. No quantity limit. <span style="color:#999">· 用于转化追踪，数量不限。</span></span>
-      </div>
+        <label style="margin:0;flex-shrink:0">Tracking ASIN(s) <span class="zh">· 追踪 ASIN</span> <span class="req">*</span></label><span class="help-links"><a onclick="openHelp('help-attr')"><span class="lang-en">Attribution metric definitions</span><span class="lang-sep"> · </span><span class="lang-zh">归因指标定义</span></a><span class="hl-div">|</span><a onclick="openHelp('help-ct')"><span class="lang-en">Conversion tracking</span><span class="lang-sep"> · </span><span class="lang-zh">转化追踪</span></a></span>
+        </div>
+      <div class="hint" style="margin:-2px 0 6px">Tracking ASINs credit their detail page views, add-to-carts and purchases to this campaign as promoted conversions; untracked same-brand products count only as brand halo. No quantity limit.<br><span class="zh">添加追踪 ASIN，可将其详情页浏览、加购及购买准确归因到本次广告（计入推广商品指标）；未添加的同品牌商品仅计入品牌光环（Brand Halo），非同品牌商品不计入。数量不限。</span></div>
       <div class="choice-row"><label class="choice"><input type="radio" name="track_method_${v}" value="direct" onchange="toggleTrackMethod('${v}')"> A. Enter directly · 直接输入</label><label class="choice"><input type="radio" name="track_method_${v}" value="file" onchange="toggleTrackMethod('${v}')"> B. Attachment · 附件提供</label></div>
         <div id="${v}-track-direct" class="track-sub" style="display:none">
             <input type="text" id="${v}-track" placeholder="B0XXXXXXXXX, B0XXXXXXXXX, ..." oninput="validateAsin(this,'${v}-track-err')"/>
@@ -1050,5 +1092,101 @@ window.setLang=function(l){LANG=l;applyLang();};
 let tmr; const obs=new MutationObserver(()=>{clearTimeout(tmr);tmr=setTimeout(applyLang,0);});
 try{applyLang();}catch(e){console.error(e);busy=false;}
 })();
+</script>
+<div id="help-modal" onclick="if(event.target===this)closeHelp()"><div class="hm-box"><button class="hm-x" onclick="closeHelp()">✕</button><div class="hm-doc" id="help-ct"><div class="doc" id="help-ct-doc">
+<div class="src">来源：<a href="https://advertising.amazon.com/help/GAGD23JSZNXM2B47">https://advertising.amazon.com/help/GAGD23JSZNXM2B47</a></div>
+<div class="row head"><div>English</div><div>中文</div></div>
+<div class="row"><div><h1>Conversion tracking</h1></div><div><h1>转化追踪</h1></div></div>
+<div class="row meta"><div>Updated on Jun 25, 2026</div><div>更新于 2026 年 6 月 25 日</div></div>
+<div class="row"><div>Tracked items determine which conversion events can be attributed to your campaign.</div><div>追踪项决定了哪些转化事件可以归因到您的广告活动。</div></div>
+<div class="row"><div class="note"><b>Note:</b> If you add or remove tracked items from a campaign, your attributed conversions may increase or decrease accordingly.</div><div class="note"><b>注意：</b>如果您在广告活动中添加或移除追踪项，归因转化数可能会相应增加或减少。</div></div>
+
+<div class="row"><div><h2>What's conversion tracking?</h2></div><div><h2>什么是转化追踪？</h2></div></div>
+<div class="row"><div>Attribution shows which shopper actions your ads influenced. Conversion tracking is the first step of attribution. It determines which events can be attributed to your campaign, helping you measure impact on and off Amazon. Before launching, select the Amazon products and off-Amazon events you want to track. To add tracked items to your campaign:</div>
+<div>归因展示了您的广告影响了哪些购物者行为。转化追踪是归因的第一步，它决定哪些事件可以归因到您的广告活动，帮助您衡量亚马逊站内和站外的影响。在广告活动上线前，请选择您要追踪的亚马逊商品和站外事件。为广告活动添加追踪项的步骤：</div></div>
+<div class="row"><div><ol>
+<li>In the navigation side menu, click <b>Campaigns</b>.</li>
+<li>In the Campaigns page side menu, click <b>Campaigns</b> (formerly known as Orders on Amazon DSP). Then, click the one you want to view attribution.</li>
+<li>Click <b>Campaign settings</b>.</li>
+<li>Scroll to the <b>Conversion Tracking</b> section and view and edit your conversion tracking information.</li></ol></div>
+<div><ol>
+<li>在左侧导航菜单中，点击<b>广告活动 (Campaigns)</b>。</li>
+<li>在广告活动页面的侧边菜单中，点击<b>广告活动 (Campaigns)</b>（在 Amazon DSP 中原称为“订单 (Orders)”），然后点击您要查看归因的广告活动。</li>
+<li>点击<b>广告活动设置 (Campaign settings)</b>。</li>
+<li>滚动到<b>转化追踪 (Conversion Tracking)</b>部分，查看并编辑转化追踪信息。</li></ol></div></div>
+<div class="row"><div>You can update your tracked items after your campaign goes live, but changes only adjust attribution for the previous 28 days. Those adjustments appear gradually over the 3 weeks following the change. Learn more about <a href="https://advertising.amazon.com/help/G22MA5YPN9KKT7TM">Attribution restatements</a>.</div>
+<div>广告活动上线后仍可更新追踪项，但更改只会调整过去 28 天的归因数据，且这些调整会在更改后的 3 周内逐步体现。了解更多关于<a href="https://advertising.amazon.com/help/G22MA5YPN9KKT7TM">归因数据重述 (Attribution restatements)</a>的信息。</div></div>
+
+<div class="row"><div><h2>Amazon products</h2></div><div><h2>亚马逊商品</h2></div></div>
+<div class="row"><div>If you're promoting products sold on Amazon, you can associate them with your campaign by clicking <b>Add products</b> and selecting specific product ASINs. Learn more about <a href="https://advertising.amazon.com/help/G3BB9TWP5KC375TJ">Conversion attribution</a> and <a href="https://advertising.amazon.com/help/GUWP3XPKZ5K3L6A">Attribution troubleshooting</a>.</div>
+<div>如果您推广的是在亚马逊销售的商品，可以点击<b>添加商品 (Add products)</b>并选择具体的商品 ASIN，将其关联到广告活动。了解更多关于<a href="https://advertising.amazon.com/help/G3BB9TWP5KC375TJ">转化归因</a>和<a href="https://advertising.amazon.com/help/GUWP3XPKZ5K3L6A">归因问题排查</a>的信息。</div></div>
+<div class="row"><div>Conversion attribution includes both the products you directly track (<mark class="tk">promoted products (Tracking ASIN)</mark>) and other products from the same brand that are not directly tracked (brand halo). For accurate attribution, follow these recommendations:</div>
+<div>转化归因既包括您直接追踪的商品（<mark class="tk">推广商品（Tracking ASIN）</mark>），也包括未直接追踪的同品牌其他商品（品牌光环）。为确保归因准确，请遵循以下建议：</div></div>
+<div class="row"><div><ul>
+<li><b>Accurate brand halo attribution:</b> Verify that your tracked ASINs belong to the correct brands and resolve any incorrect mappings on the Brands page.</li>
+<li><b>Track product variations:</b> Add the ASIN for each variation you want to track, such as different sizes or colors.</li>
+<li><b>Cross-domain coverage:</b> Add ASINs separately for each applicable Amazon domain.</li></ul></div>
+<div><ul>
+<li><b>准确的品牌光环归因：</b>确认追踪的 ASIN 归属于正确的品牌，并在“品牌 (Brands)”页面修正错误的映射。</li>
+<li><b>追踪商品变体：</b>为每个需要追踪的变体（如不同尺寸或颜色）添加对应的 ASIN。</li>
+<li><b>跨站点覆盖：</b>为每个适用的亚马逊站点分别添加 ASIN。</li></ul></div></div>
+<div class="row"><div class="note"><b>Example:</b> To track conversions for a product across Amazon.com, Whole Foods US stores, and Fresh US stores, add the same ASIN for each domain.</div>
+<div class="note"><b>示例：</b>如需追踪某商品在 Amazon.com、美国 Whole Foods 门店和美国 Fresh 门店的转化，请为每个站点添加相同的 ASIN。</div></div>
+<div class="row"><div>We recommend tracking all ASINs featured in your ads and landing pages, including color and size variations. To compare attribution accurately between campaigns, keep your tracking strategy consistent. If 1 campaign tracks only featured ASINs while another tracks loosely related products, the comparisons may not be meaningful.</div>
+<div>建议追踪广告和落地页中展示的所有 ASIN，包括颜色和尺寸变体。为了在不同广告活动之间准确比较归因数据，请保持追踪策略一致。如果一个广告活动只追踪主推 ASIN，而另一个追踪关联度较低的商品，两者的比较可能没有意义。</div></div>
+<div class="row"><div>For each conversion type, the "Total" metric includes conversions from both promoted and brand halo products, reflecting the campaign's overall impact on your brand.</div>
+<div>对于每种转化类型，“总计 (Total)”指标同时包含<mark class="tk">推广商品（Tracking ASIN）</mark>和品牌光环商品的转化，反映广告活动对品牌的整体影响。</div></div>
+<div class="row"><div class="note"><b>Example:</b> "Total detail page views" includes DPV conversions of both promoted ASINs (Tracking ASIN) and brand halo ASINs.</div>
+<div class="note"><b>示例：</b>“总详情页浏览量 (Total detail page views)”同时包含推广 ASIN（Tracking ASIN） 和品牌光环 ASIN 的详情页浏览 (DPV) 转化。</div></div>
+
+<div class="row"><div><h2>Off-Amazon conversions</h2></div><div><h2>亚马逊站外转化</h2></div></div>
+<div class="row"><div>You can add off-Amazon conversions to your campaign for attribution and optimization. Events Manager sources off-Amazon conversions using:<ul><li>Amazon Advertising tag</li><li>Conversions API</li><li>Mobile Measurement Partner</li></ul></div>
+<div>您可以将亚马逊站外转化添加到广告活动中，用于归因和优化。事件管理器 (Events Manager) 通过以下方式获取站外转化：<ul><li>亚马逊广告代码 (Amazon Advertising tag)</li><li>转化 API (Conversions API)</li><li>移动监测合作伙伴 (Mobile Measurement Partner)</li></ul></div></div>
+<div class="row"><div>To add off-Amazon conversions, set them up in Events Manager first. Learn about <a href="https://advertising.amazon.com/help/G3UDSKBM55C7YSBS">off-Amazon conversions</a>. If you're using Performance+, select at least 1 off-Amazon conversion associated with your campaign for Performance+ optimization.</div>
+<div>如需添加站外转化，请先在事件管理器中完成设置。了解更多关于<a href="https://advertising.amazon.com/help/G3UDSKBM55C7YSBS">亚马逊站外转化</a>的信息。如果您使用 Performance+，请至少选择 1 个与广告活动关联的站外转化，用于 Performance+ 优化。</div></div>
+
+<div class="row"><div><h2>Pixels</h2></div><div><h2>像素</h2></div></div>
+<div class="row"><div>Pixels are no longer supported for conversion tracking. If you're using Simple Pixel, migrate to the Amazon Ad tag. Learn how to <a href="https://advertising.amazon.com/help/GLZ54GXQW773A6MG">create an Amazon Ad tag</a>.</div>
+<div>像素已不再支持用于转化追踪。如果您正在使用 Simple Pixel，请迁移到亚马逊广告代码 (Amazon Ad tag)。了解如何<a href="https://advertising.amazon.com/help/GLZ54GXQW773A6MG">创建亚马逊广告代码</a>。</div></div>
+<div class="row"><div class="note"><b>Note:</b> When multiple campaigns compete for the same conversion, attribution rules will determine which campaign receives credit.</div>
+<div class="note"><b>注意：</b>当多个广告活动争夺同一个转化时，将由归因规则决定哪个广告活动获得该转化。</div></div></div></div><div class="hm-doc" id="help-attr"><div class="doc">
+<div class="src">来源：<a href="https://advertising.amazon.com/help/GA58RFKXFRQKX89X">https://advertising.amazon.com/help/GA58RFKXFRQKX89X</a></div>
+<div class="row"><div><h1>Amazon Attribution metric definition</h1></div><div><h1>Amazon Attribution 指标定义</h1></div></div>
+<div class="row meta"><div>Updated on Nov 11, 2025</div><div>更新于 2025 年 11 月 11 日</div></div>
+<table>
+<tbody><tr><th style="width:15%">Name</th><th style="width:35%">Definition</th><th style="width:15%">名称</th><th style="width:35%">定义</th></tr>
+<tr class="hl-row"><td><mark class="tk">Promoted product (Tracking ASIN)</mark></td><td>A product that is tracked by an Amazon Attribution campaign.</td><td class="zh"><mark class="tk">推广商品（Tracking ASIN）</mark></td><td class="zh">由 Amazon Attribution 广告活动追踪的商品。</td></tr>
+<tr><td>Add to Cart (ATC)</td><td>The number of times a <mark class="tk">promoted product (Tracking ASIN)</mark> is added to a customer's cart after an associated ad click.</td><td class="zh">加购 (ATC)</td><td class="zh">相关广告点击后，<mark class="tk">推广商品（Tracking ASIN）</mark>被加入顾客购物车的次数。</td></tr>
+<tr><td>Brand Halo</td><td>Brand halo measures the impact of advertising on the overall brand by tracking conversions on products by the same brand as the <mark class="tk">promoted products (Tracking ASIN)</mark>. For example, "Add to Cart Brand Halo" and "Purchases Brand Halo." Brand Halo metrics exclude the <mark class="tk">promoted products (Tracking ASIN)</mark>. All brand halo metrics are abbreviated using "BH."</td><td class="zh">品牌光环</td><td class="zh">品牌光环通过追踪与<mark class="tk">推广商品（Tracking ASIN）</mark>同品牌的其他商品的转化，衡量广告对品牌整体的影响，例如“加购品牌光环”和“购买品牌光环”。品牌光环指标不包含<mark class="tk">推广商品（Tracking ASIN）</mark>，所有品牌光环指标均缩写为“BH”。</td></tr>
+<tr><td>New-to-brand purchases</td><td>The number of first-time Purchases (promoted) (formerly known as Purchases on Amazon DSP) for <mark class="tk">promoted products (Tracking ASIN)</mark> within the brand over a 1-year lookback window.</td><td class="zh">品牌新客购买次数</td><td class="zh">在 1 年回溯期内，首次在该品牌购买<mark class="tk">推广商品（Tracking ASIN）</mark>的购买次数（推广）（在 Amazon DSP 中原称为“Purchases”）。</td></tr>
+<tr><td>New-to-brand units sold</td><td>The quantity of <mark class="tk">promoted products (Tracking ASIN)</mark> purchased for the first time within the brand over a 1-year lookback period after delivering an ad. A campaign can have multiple units sold in a single purchase event.</td><td class="zh">品牌新客销售件数</td><td class="zh">投放广告后，在 1 年回溯期内首次在该品牌购买的<mark class="tk">推广商品（Tracking ASIN）</mark>数量。一次购买事件中，广告活动可能售出多件商品。</td></tr>
+<tr><td>Product sales</td><td>The total sales (in local currency) of <mark class="tk">promoted products (Tracking ASIN)</mark> purchased by customers on Amazon after an associated ad click.</td><td class="zh">商品销售额</td><td class="zh">相关广告点击后，顾客在亚马逊购买<mark class="tk">推广商品（Tracking ASIN）</mark>的总销售额（以当地货币计）。</td></tr>
+<tr><td>Purchases</td><td>The number of times any amount of a <mark class="tk">promoted product (Tracking ASIN)</mark> or products are included in a purchase event. Purchase events include video rentals and new Subscribe &amp; Save subscriptions.</td><td class="zh">购买次数</td><td class="zh">任意数量的<mark class="tk">推广商品（Tracking ASIN）</mark>被包含在一次购买事件中的次数。购买事件包括视频租赁和新的“订购省”订阅。</td></tr>
+<tr><td>Purchases (formerly known as Total purchases on Amazon DSP)</td><td>The number of times any number of products are included in a single purchase event. Purchase events include Subscribe &amp; Save subscriptions and video rentals. This counts Purchases (promoted) for <mark class="tk">promoted products (Tracking ASIN)</mark> as well as products from the same brands as the products tracked in the campaign (formerly known as Order on Amazon DSP). (Purchases = Purchases (promoted) + Purchases BH)</td><td class="zh">购买次数（在 Amazon DSP 中原称为“Total purchases”）</td><td class="zh">任意数量的商品被包含在单次购买事件中的次数。购买事件包括“订购省”订阅和视频租赁。该指标既统计<mark class="tk">推广商品（Tracking ASIN）</mark>的购买次数（推广），也统计与广告活动所追踪商品同品牌的商品（在 Amazon DSP 中原称为“Order”）。（购买次数 = 购买次数（推广）+ 购买次数 BH）</td></tr>
+<tr><td>Total Add to Carts (Total ATC)</td><td>The number of times a product is added to a customer's cart. This count adds for <mark class="tk">promoted products (Tracking ASIN)</mark> as well as products from the same brands as the products tracked in the campaign. (Total ATC = ATC + ATC BH)</td><td class="zh">总加购次数 (Total ATC)</td><td class="zh">商品被加入顾客购物车的次数，统计范围包括<mark class="tk">推广商品（Tracking ASIN）</mark>以及与广告活动所追踪商品同品牌的商品。（总加购 = 加购 + 加购 BH）</td></tr>
+<tr><td>Total detail page views (Total DPV)</td><td>The number of ad-attributed detail page views on Amazon. This includes views for <mark class="tk">promoted products (Tracking ASIN)</mark> as well as products from the same brands as the products tracked in the campaign. (Total DPV = DPV + DPV BH)</td><td class="zh">总详情页浏览量 (Total DPV)</td><td class="zh">亚马逊上归因于广告的详情页浏览次数，包括<mark class="tk">推广商品（Tracking ASIN）</mark>以及与广告活动所追踪商品同品牌商品的浏览。（总 DPV = DPV + DPV BH）</td></tr>
+<tr><td>Total product sales</td><td>The total sales (in local currency) of <mark class="tk">promoted products (Tracking ASIN)</mark> and products from the same brands as <mark class="tk">promoted products (Tracking ASIN)</mark> purchased by customers on Amazon after an associated ad click.</td><td class="zh">总商品销售额</td><td class="zh">相关广告点击后，顾客在亚马逊购买<mark class="tk">推广商品（Tracking ASIN）</mark>及其同品牌商品的总销售额（以当地货币计）。</td></tr>
+<tr><td>Total units sold</td><td>The total quantity of <mark class="tk">promoted products (Tracking ASIN)</mark> and products from the same brand as <mark class="tk">promoted products (Tracking ASIN)</mark> purchased by customers on Amazon after an associated ad click. A campaign can have multiple units sold in a single purchase event.</td><td class="zh">总销售件数</td><td class="zh">相关广告点击后，顾客在亚马逊购买<mark class="tk">推广商品（Tracking ASIN）</mark>及其同品牌商品的总数量。一次购买事件中，广告活动可能售出多件商品。</td></tr>
+<tr><td>Units sold</td><td>The total quantity of <mark class="tk">promoted products (Tracking ASIN)</mark> purchased by customers on Amazon after exposure to an ad. A campaign can have multiple units sold in a single purchase event.</td><td class="zh">销售件数</td><td class="zh">顾客接触广告后，在亚马逊购买<mark class="tk">推广商品（Tracking ASIN）</mark>的总数量。一次购买事件中，广告活动可能售出多件商品。</td></tr>
+<tr><td>Ad group</td><td>Each ad group receives a unique attribution tag and will measure Amazon conversions for the products selected during campaign creation.</td><td class="zh">广告组</td><td class="zh">每个广告组都会获得一个唯一的归因标签，用于衡量创建广告活动时所选商品在亚马逊上的转化。</td></tr>
+<tr><td>Attribution tag</td><td>When added to the destination URL parameters of third-party ads, Amazon Attribution allow for measurement and reporting of shopping activity on Amazon, upon ad click.</td><td class="zh">归因标签</td><td class="zh">将其添加到第三方广告的目标 URL 参数中后，Amazon Attribution 可以在广告点击后衡量并报告亚马逊上的购物行为。</td></tr>
+<tr><td>Campaign</td><td>A grouping of ad groups tracking conversions and activity for the same products.</td><td class="zh">广告活动</td><td class="zh">一组广告组的集合，追踪相同商品的转化和活动。</td></tr>
+<tr><td>Channel</td><td>The ad type (for example Display, Email, Search, Social, or Video).</td><td class="zh">渠道</td><td class="zh">广告类型（例如展示、邮件、搜索、社交或视频）。</td></tr>
+<tr><td>Click-through URL</td><td>The destination URL of the ad when consumers click through.</td><td class="zh">点击跳转 URL</td><td class="zh">消费者点击广告后跳转到的目标 URL。</td></tr>
+<tr><td>Click-throughs</td><td>An ad click that directs consumers to a destination outside of the ad (formerly known as Creative on Amazon DSP).</td><td class="zh">点击跳转次数</td><td class="zh">将消费者引导至广告以外目标页面的广告点击（在 Amazon DSP 中原称为“Creative”）。</td></tr>
+<tr><td>Detail page views (DPV)</td><td>The number of views of the advertised product's detail pages on Amazon.</td><td class="zh">详情页浏览量 (DPV)</td><td class="zh">所<mark class="tk">推广商品（Tracking ASIN）</mark>在亚马逊上详情页的浏览次数。</td></tr>
+<tr><td>New-to-brand product sales</td><td>The total sales (in local currency) of new-to-brand orders.</td><td class="zh">品牌新客商品销售额</td><td class="zh">品牌新客订单的总销售额（以当地货币计）。</td></tr>
+<tr><td>Publisher</td><td>The source of ad inventory that allows advertisers to display ads on their website, app, search listings, or other property.</td><td class="zh">发布商</td><td class="zh">广告库存的来源，允许广告主在其网站、应用、搜索列表或其他媒体资源上展示广告。</td></tr>
+<tr><td>New-to-brand Purchases Views</td><td>The number of first-time Purchases (promoted) for products within the brand for the first time over a one-year lookback window attributed to an ad view.</td><td class="zh">品牌新客购买次数（浏览归因）</td><td class="zh">在 1 年回溯期内首次在该品牌购买商品、且归因于广告浏览的购买次数（推广）。</td></tr>
+<tr><td>DPV Views</td><td>The number of detail page view conversions attributed to ad impressions within 14 days of the click.</td><td class="zh">详情页浏览量（浏览归因）</td><td class="zh">点击后 14 天内归因于广告展示的详情页浏览转化次数。</td></tr>
+<tr><td>ATC Views</td><td>The number of Add to Cart conversions attributed to ad impressions in 14 day window.</td><td class="zh">加购次数（浏览归因）</td><td class="zh">14 天窗口期内归因于广告展示的加购转化次数。</td></tr>
+<tr><td>Purchases Views</td><td>The number of Purchases (promoted) attributed to ad view in a 14 day window.</td><td class="zh">购买次数（浏览归因）</td><td class="zh">14 天窗口期内归因于广告浏览的购买次数（推广）。</td></tr>
+<tr><td>Units Sold Views</td><td>The number of units sold attributed to an ad view within 14 days.</td><td class="zh">销售件数（浏览归因）</td><td class="zh">14 天内归因于广告浏览的销售件数。</td></tr>
+</table>
+</div></div></div></div>
+<script>
+function openHelp(id){document.querySelectorAll('#help-modal .hm-doc').forEach(e=>e.classList.toggle('on',e.id===id));const m=document.getElementById('help-modal');m.classList.add('show');m.scrollTop=0;document.body.style.overflow='hidden';}
+function closeHelp(){document.getElementById('help-modal').classList.remove('show');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHelp();});
 </script>
 </body></html>
